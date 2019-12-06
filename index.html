@@ -299,6 +299,12 @@ https://discord.gg/n36dbzH
 .block
 {
 	display: block;
+	white-space: pre-wrap;       /* css-3 */
+ white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+ white-space: -pre-wrap;      /* Opera 4-6 */
+ white-space: -o-pre-wrap;    /* Opera 7 */
+ word-wrap: break-word;       /* Internet Explorer 5.5+ */
+	width: 100%;
 }
 #ItemRarity
 {
@@ -358,14 +364,17 @@ https://discord.gg/n36dbzH
 	<div class="item_holder" id="item_holder" onclick="SelectNewItem();">
 		<img src="/items/2-0.png" class="item_img" id="ItemPreviewImg">
 	</div>
-	<div class="imgbord" id="item_preview" style="float: right; width: 80%;">
-		<span class="white" id="ItemValue_Name" class="block">Unnamed Item</span><br>
+	<div class="imgbord" id="item_preview" style="float: right; width: 80%;white-space: pre-wrap;       /* css-3 */
+ white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+ white-space: -pre-wrap;      /* Opera 4-6 */
+ white-space: -o-pre-wrap;    /* Opera 7 */
+ word-wrap: break-word;       /* Internet Explorer 5.5+ */ ">
+		<span class="white" id="ItemValue_Name" class="block">Unnamed Item</span>
 		<span id="Hide_ItemValue_Damage" style="display: none;" class="block"><span class="gray">Damage: </span><span class="red" id="ItemValue_Damage">+0</span></span>
 		<span id="Hide_ItemValue_Strength" style="display: none;"  class="block"><span class="gray">Strength: </span><span class="red" id="ItemValue_Strength">+0</span></span>
 		<span id="Hide_ItemValue_Crit" style="display: none;" class="block"><span class="gray">Crit Chance: </span><span class="red" id="ItemValue_Crit">+0%</span></span>
 		<span id="Hide_ItemValue_CritDmg" style="display: none;" class="block"><span class="gray">Crit Damage: </span><span class="red" id="ItemValue_CritDmg">+0%</span></span>
 		<span id="Hide_ItemValue_Atk" style="display: none;" class="block"><span class="gray">Attack Speed: </span><span class="red" id="ItemValue_Atk">+0%</span></span>
-		<br>
 		<span id="Hide_ItemValue_Health" style="display: none;" class="block"><span class="gray">Health: </span><span class="green" id="ItemValue_Health">+0 HP</span></span>
 		<span id="Hide_ItemValue_Def" style="display: none;" class="block"><span class="gray">Defense: </span><span class="green" id="ItemValue_Def">+0</span></span>
 		<span id="Hide_ItemValue_Speed" style="display: none;" class="block"><span class="gray">Speed: </span><span class="green" id="ItemValue_Speed">+0%</span></span>
