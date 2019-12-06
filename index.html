@@ -1278,9 +1278,17 @@ function UpdateValue(w, h, add = "")
 		}
 		return;
 	}
-	if(!window.StringVars.includes(w))
+	if(!window.StringVars.includes(w) && !h.startsWith("-"))
 	{
 		h = "+"+h;
+	}
+	else if(parseInt(h) == NaN)
+	{
+		h = 0;
+	}
+	else
+	{
+		h = parseInt(h);
 	}
 	if(add != "") { h = h+add; }
 	console.log("NEW VAL: "+h);
