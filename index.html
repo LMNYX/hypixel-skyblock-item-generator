@@ -1,9 +1,8 @@
 <head>
 	<title>- item builder -</title>
-	<script
-  src="https://code.jquery.com/jquery-3.4.1.js"
-  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-  crossorigin="anonymous"></script>
+
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
   <script type="text/javascript" src="mc_ids.js"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -11,7 +10,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/popper.js@1"></script>
 <script src="https://unpkg.com/tippy.js@5"></script>
-
 </head>
 <style type="text/css">
 @font-face
@@ -311,11 +309,19 @@ https://discord.gg/n36dbzH
 {
 	font-weight: bold;
 }
+#ErrorFlash
+{
+	display: block;
+	position: fixed;
+	top: 0;
+	right: 0;
+}
 </style>
-
 <div style="margin: 42px auto; width: 75%;">
-	<h3>Item Builder <span class="gray">Result at the bottom</span></h3>
+	<h3>Item Builder <span class="gray" id="ResultNotice">Result at the bottom</span></h3>
 	<hr>
+	<div id="UserControls">
+	
 	<div class="mctooltip white">
 		<center>You can use <span class="red">&cMinecraft</span> color codes and \n (new line)!</center>
 		<center><span class="gray">I'm currently testing this generator, so be sure to report any bugs!</span></center>
@@ -362,6 +368,8 @@ https://discord.gg/n36dbzH
 	</select><br>
 	<br>
 	<br>
+
+	</div>
 	<div class="item_holder" id="item_holder" onclick="SelectNewItem();">
 		<img src="items/2-0.png" class="item_img" id="ItemPreviewImg">
 	</div>
@@ -372,6 +380,7 @@ https://discord.gg/n36dbzH
 		<span id="Hide_ItemValue_Crit" style="display: none;" class="block"><span class="gray">Crit Chance: </span><span class="red" id="ItemValue_Crit">+0%</span></span>
 		<span id="Hide_ItemValue_CritDmg" style="display: none;" class="block"><span class="gray">Crit Damage: </span><span class="red" id="ItemValue_CritDmg">+0%</span></span>
 		<span id="Hide_ItemValue_Atk" style="display: none;" class="block"><span class="gray">Attack Speed: </span><span class="red" id="ItemValue_Atk">+0%</span></span>
+		<br>
 		<span id="Hide_ItemValue_Health" style="display: none;" class="block"><span class="gray">Health: </span><span class="green" id="ItemValue_Health">+0 HP</span></span>
 		<span id="Hide_ItemValue_Def" style="display: none;" class="block"><span class="gray">Defense: </span><span class="green" id="ItemValue_Def">+0</span></span>
 		<span id="Hide_ItemValue_Speed" style="display: none;" class="block"><span class="gray">Speed: </span><span class="green" id="ItemValue_Speed">+0%</span></span>
@@ -394,8 +403,16 @@ https://discord.gg/n36dbzH
 			<button class="button" onclick="window.location.href = 'https://twitter.com/LilLmnyx';">View my Twitter</button>
 			<br>
 			<span class="black">made with love by lmnyx <span class="red"><3</span></span><br>
+			<!--
+			--- * NEXT UPDATE * ---
+			<span class="black">used assets from <span class="red" onclick="window.location.href = 'https://hypixel.net/members/furf__.2859980/';" style="cursor: pointer;">@Furf__'s</span> resource pack!</span>
+		-->
 		</center>
 	</p>
+	<br>
+	<p style="text-align: center;">
+		<span>Share your creation with your friends:</span>
+		<br><input class="mcin" id="ShareLink" readonly="" value="https://lmnyx.github.io/hypixel-skyblock-item-generator/" onclick="this.setSelectionRange(0, this.value.length);"> <button class="button" id="CopyShareLink" onclick="CopyShareLink();">Copy!</button></p>
 </div>
 <div id="SelectIco" class="hidden">
 	<img src='items/0-0.png' class='item_img2 itemselector' value='0'>
@@ -1118,7 +1135,10 @@ https://discord.gg/n36dbzH
 	<img src='items/2266-0.png' class='item_img2 itemselector' value='717'>
 	<img src='items/2267-0.png' class='item_img2 itemselector' value='718'>
 </div>
+
+<div id="ErrorFlash" style="display: none;"><b class="red">Error!</b> Check console!</div>
 <script type="text/javascript">
+var NoControls = false;
 window.onload = function()
 {
 	document.getElementById("item_holder").style.height = document.getElementById("item_preview").offsetHeight;
@@ -1136,13 +1156,49 @@ window.onload = function()
 			content: mc_ids[i]['name']
 		});
 	}
-
+	var parts = window.location.search.substr(1).split("&");
+	var $_GET = {};
+	for (var i = 0; i < parts.length; i++) {
+	    var temp = parts[i].split("=");
+	    $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
+	}
+	if($_GET['no_controls'] != null && Boolean(parseInt($_GET['no_controls'])) ){
+		$("#UserControls").css("display", "none");
+		$("#ResultNotice").css("display", "none");
+		document.getElementById("item_holder").onclick = "";
+		$("#item_holder").click(function()
+			{
+				return;
+			});
+		window.NoControls=true;
+	}
+	else
+	{
+		tippy("#item_holder",
+		{
+			content: "<span class='white'>Click to change</span>"
+		});
+		tippy("#RemoveableNote",
+		{
+			content: "<span class='white'>Click to remove...<span class='red'>please don't :(</span><br>It will be cool if you leave this link there, I will appreciate it a lot!!!</span>"
+		});
+	}
+	for(var key in $_GET)
+	{
+		if(key == ""){ continue; }
+		if(key == "no_controls"){ continue; }
+		console.log("[AutoUpdate] Updating from $_GET("+key+")");
+		UpdateValue(key, $_GET[key]);
+	}
 }
 function SetMainImage(src)
 {
 	$('#ItemPreviewImg').attr('src', src);
 	$("body").removeClass("blured");
 	$("#SelectIco").css("display", "none");
+	ShareLink['ico'] = src.split('/')[1].split('.png')[0];
+	$("#ShareLink").val(CompileShareLink());
+	UpdateSizes();
 }
 function SelectNewItem()
 {
@@ -1154,14 +1210,6 @@ function SelectNewItem()
 	$("body").addClass("blured");
 	$("#SelectIco").css("display", "block");
 }
-tippy("#item_holder",
-	{
-		content: "<span class='white'>Click to change</span>"
-	});
-tippy("#RemoveableNote",
-	{
-		content: "<span class='white'>Click to remove...<span class='red'>please don't :(</span><br>It will be cool if you leave this link there, I will appreciate it a lot!!!</span>"
-	});
 tippy(".DontDisplayIfZero",
 	{
 		content: '<span class="white">This won'+"'"+'t be displayed if value is 0.</span>'
@@ -1172,6 +1220,7 @@ tippy(".DontDisplayIfEmpty",
 	});
 function RemoveCopy()
 {
+	if(NoControls){ return; }
 	document.getElementById("RemoveableNote").remove();
 	UpdateSizes();
 }
@@ -1183,132 +1232,111 @@ function setid(i,v)
 {
 	document.getElementById(i).innerHTML = v;
 }
+
+
 var LinkedVars = {
-	"name": "ItemValue_Name",
-	"damage": "ItemValue_Damage",
-	"strength": "ItemValue_Strength",
-	"defense": "ItemValue_Def",
-	"health": "ItemValue_Health",
-	"intelligence": "ItemValue_Iq",
-	"speed": "ItemValue_Speed",
-	"crit": "ItemValue_Crit",
-	"critdmg": "ItemValue_CritDmg",
-	"atk": "ItemValue_Atk",
-	"itemability_name": "ItemValue_AbilityName",
-	"itemability_desc": "ItemValue_AbilityDesc",
-	"itemability_mana": "ItemValue_AbilityMana",
-	"itemability_cooldown": "ItemValue_AbilityCl"
+	"name": {"out": "ItemValue_Name", "suffix": "", "prefix": "", "default": "Unnamed Item"},
+	"damage": {"out": "ItemValue_Damage", "suffix": "", "prefix": "+", "default": null},
+	"strength": {"out": "ItemValue_Strength", "suffix": "", "prefix": "+", "default": null},
+	"defense": {"out": "ItemValue_Def", "suffix": "", "prefix": "+", "default": null},
+	"health": {"out": "ItemValue_Health", "suffix": "", "prefix": "+", "default": null},
+	"intelligence": {"out": "ItemValue_Iq", "suffix": "", "prefix": "+", "default": null},
+	"speed": {"out": "ItemValue_Speed", "suffix": "%", "prefix": "+", "default": null},
+	"crit": {"out": "ItemValue_Crit", "suffix": "%", "prefix": "+", "default": null},
+	"critdmg": {"out": "ItemValue_CritDmg", "suffix": "%", "prefix": "+", "default": null},
+	"atk": {"out": "ItemValue_Atk", "suffix": "%", "prefix": "+", "default": null},
+	"itemability_name": {"out": "ItemValue_AbilityName", "suffix": "", "prefix": "", "default": null},
+	"itemability_desc": {"out": "ItemValue_AbilityDesc", "suffix": "", "prefix": "", "default": null},
+	"itemability_mana": {"out": "ItemValue_AbilityMana", "suffix": "", "prefix": "", "default": null},
+	"itemability_cooldown": {"out": "ItemValue_AbilityCl", "suffix": "s", "prefix": "", "default": null},
+	"rarity": {"special": true},
+	"ico": {"special": true}
 };
-var StringVars = [
-	"itemability_desc",
-	"itemability_name",
-	"name",
-	"itemability_cooldown",
-	"itemability_mana"
-];
-var SpecialVars = [
-	"itemability_rmb",
-	"rarity"
-];
-function UpdateValue(w, h, add = "")
+function FlashError()
 {
-	if(w == "name" && h == ""){ h = "Unnamed Item"; }
-	if(!window.SpecialVars.includes(w))
+	$("#ErrorFlash").css("display", "block"); setTimeout(function(){ $("#ErrorFlash").css("display", "none"); }, 4000);
+}
+function CallSpecialValueUpdate(w,h)
+{
+	ShareLink[w] = h;
+	switch(w)
 	{
-		h = replacers(h+"&r");
+		case "ico":
+			$("#ItemPreviewImg").attr("src", "items/"+h+".png");
+			break;
+		case "rarity":
+			var rarities = ["white", "green", "blue", "dark_purple", "gold", "light_purple"];
+			var string_rartieis = ["COMMON", "UNCOMMON", "RARE", "EPIC", "LEGENDARY", "SPECIAL"];
+			document.getElementById("ItemRarity").innerHTML = string_rartieis[h];
+			document.getElementById("ItemRarity").className = rarities[h];
+			document.getElementById("ItemValue_Name").className = rarities[h];
+			break;
+		default:
+			console.log("[UpdateValue][SpecialValue] An error occured with %s and %s", w, h);
+			FlashError();
+			break;
 	}
-	add = replacers(add);
-	if(window.LinkedVars[w] == null && !window.SpecialVars.includes(w))
-	{
-		alert("Unregistered variable!");
-		return;
-	}
-	if(window.SpecialVars.includes(w))
-	{
-		console.log(w, h);
-		switch(w)
+	$("#ShareLink").val(CompileShareLink());
+}
+function CopyShareLink()
+{
+	var c = document.getElementById("ShareLink");
+	c.select();
+	c.setSelectionRange(0,c.value.length);
+	document.execCommand("copy");
+	$("#CopyShareLink").html("Copied!");
+	setTimeout(function()
 		{
-			case "rarity":
-				console.log("rarity reached.");
-				switch(h)
-				{
-					case "0":
-						console.log("z reached.");
-						$("#ItemValue_Name").attr('class', 'block white');
-						$("#ItemRarity").attr('class', 'white');
-						$("#ItemRarity").html('COMMON');
-						break;
-					case "1":
-						console.log("z reached.");
-						$("#ItemValue_Name").attr('class', 'block green');
-						$("#ItemRarity").attr('class', 'green');
-						$("#ItemRarity").html('UNCOMMON');
-						break;
-					case "2":
-						console.log("z reached.");
-						$("#ItemValue_Name").attr('class', 'block blue');
-						$("#ItemRarity").attr('class', 'blue');
-						$("#ItemRarity").html('RARE');
-						break;
-					case "3":
-						console.log("z reached.");
-						$("#ItemValue_Name").attr('class', 'block dark_purple');
-						$("#ItemRarity").attr('class', 'dark_purple');
-						$("#ItemRarity").html('EPIC');
-						break;
-					case "4":
-						console.log("z reached.");
-						$("#ItemValue_Name").attr('class', 'block gold');
-						$("#ItemRarity").attr('class', 'gold');
-						$("#ItemRarity").html('LEGENDARY');
-						break;
-					case "5":
-						console.log("z reached.");
-						$("#ItemValue_Name").attr('class', 'block light_purple');
-						$("#ItemRarity").attr('class', 'light_purple');
-						$("#ItemRarity").html('SPECIAL');
-						break;
-					default:
-						console.log("z reached.");
-						break;
-				}
-				break;
-			default:
-				break;
-		}
+			$("#CopyShareLink").html("Copy!");
+		},1500);
+}
+var ShareLink = {"no_controls": 1};
+function dictToURI(dict) {
+  var str = [];
+  for(var p in dict){
+     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(dict[p]));
+  }
+  return str.join("&");
+}
+function CompileShareLink()
+{
+	var BASE_URL = "https://lmnyx.github.io/hypixel-skyblock-item-generator/?"+dictToURI(ShareLink);
+
+	return BASE_URL;
+}
+function UpdateValue(w, h, deprecated = "ReallyDeprecated")
+{
+	console.log("[UpdateValue] Updating value:\nName: %s\nValue: %s", w,h);
+	if(LinkedVars[w] == null) { console.log("There is an error occured with updating a value: No LinkedVar found with name %s!", w); FlashError(); return; }
+	if(LinkedVars[w].special != null || LinkedVars[w].special)
+	{
+		CallSpecialValueUpdate(w,h);
+		UpdateSizes();
 		return;
 	}
-	if(!window.StringVars.includes(w) && !h.startsWith("-"))
+	if(LinkedVars[w].default == null && !h)
 	{
-		h = "+"+h;
+		$("#Hide_"+LinkedVars[w].out).css("display", "none");
+		UpdateSizes();
+		return;
 	}
-	else if(window.StringVars.includes(w))
+	else if (LinkedVars[w].default != null && !h)
 	{
-		h = h;
+		$("#"+LinkedVars[w].out).html(LinkedVars[w].default);
+		UpdateSizes();
+		return;
 	}
-	else if(parseInt(h) == NaN)
-	{
-		h = 0;
-	}
-	else
+	NoPref = false;
+	if(h.startsWith("-") && !isNaN(parseInt(h)) && LinkedVars[w].prefix == "+")
 	{
 		h = parseInt(h);
+		NoPref = true;
 	}
-	if(add != "") { h = h+add; }
-	console.log("NEW VAL: "+h);
-	if(h == '</strong></s></u></em><span class="gray">'
-		|| h == '+</strong></s></u></em><span class="gray">'+add
-		|| h == '</strong></s></u></em><span class="gray">'+add
-		|| h == '+</strong></s></u></em><span class="gray">'
-		|| h == 0)
-	{
-		$("#Hide_"+window.LinkedVars[w]).css('display', 'none');
-	}
-	else
-	{
-		$("#Hide_"+window.LinkedVars[w]).css('display', 'block');
-	}
-	$("#"+window.LinkedVars[w]).html(h);
+	$("#Hide_"+LinkedVars[w].out).css("display", "block");
+	if(!NoPref) { $("#"+LinkedVars[w].out).html(replacers(LinkedVars[w].prefix+h+LinkedVars[w].suffix)); }
+	else { $("#"+LinkedVars[w].out).html(replacers(h+LinkedVars[w].suffix)); }
+	ShareLink[w] = h;
+	$("#ShareLink").val(CompileShareLink());
 	UpdateSizes();
 }
 var color = {
