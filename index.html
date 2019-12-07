@@ -1,8 +1,5 @@
 <head>
 	<title>- item builder -</title>
-
-	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-
   <script type="text/javascript" src="mc_ids.js"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -10,6 +7,8 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/popper.js@1"></script>
 <script src="https://unpkg.com/tippy.js@5"></script>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 </head>
 <style type="text/css">
 @font-face
@@ -269,7 +268,7 @@ https://discord.gg/n36dbzH
 	position: fixed;
 	top: 50%; left: 50%;
 	transform: translate(-50%,-50%);
-	background-color: #999;
+	background-color: #222;
 	border-radius: 7px;
 	border: solid 1px #888;
 	overflow: auto;
@@ -282,6 +281,10 @@ https://discord.gg/n36dbzH
 
 }
 .itemselector:hover
+{
+	background-color: rgba(0,0,0,0.2);
+}
+.itemselector2:hover
 {
 	background-color: rgba(0,0,0,0.2);
 }
@@ -371,7 +374,7 @@ https://discord.gg/n36dbzH
 
 	</div>
 	<div class="item_holder" id="item_holder" onclick="SelectNewItem();">
-		<img src="items/2-0.png" class="item_img" id="ItemPreviewImg">
+		<img src="items/2-0.png" class="item_img" id="ItemPreviewImg" onerror="SetMainImage('null.png');">
 	</div>
 	<div class="imgbord" id="item_preview" style="float: right; width: 80%;">
 		<span class="white" id="ItemValue_Name" class="block">Unnamed Item</span>
@@ -403,10 +406,7 @@ https://discord.gg/n36dbzH
 			<button class="button" onclick="window.location.href = 'https://twitter.com/LilLmnyx';">View my Twitter</button>
 			<br>
 			<span class="black">made with love by lmnyx <span class="red"><3</span></span><br>
-			<!--
-			--- * NEXT UPDATE * ---
 			<span class="black">used assets from <span class="red" onclick="window.location.href = 'https://hypixel.net/members/furf__.2859980/';" style="cursor: pointer;">@Furf__'s</span> resource pack!</span>
-		-->
 		</center>
 	</p>
 	<br>
@@ -415,6 +415,7 @@ https://discord.gg/n36dbzH
 		<br><input class="mcin" id="ShareLink" readonly="" value="https://lmnyx.github.io/hypixel-skyblock-item-generator/" onclick="this.setSelectionRange(0, this.value.length);"> <button class="button" id="CopyShareLink" onclick="CopyShareLink();">Copy!</button></p>
 </div>
 <div id="SelectIco" class="hidden">
+	<center><span class="white">Vanilla Minecraft 1.9</span></center>
 	<img src='items/0-0.png' class='item_img2 itemselector' value='0'>
 	<img src='items/1-0.png' class='item_img2 itemselector' value='1'>
 	<img src='items/1-1.png' class='item_img2 itemselector' value='2'>
@@ -1134,6 +1135,80 @@ https://discord.gg/n36dbzH
 	<img src='items/2265-0.png' class='item_img2 itemselector' value='716'>
 	<img src='items/2266-0.png' class='item_img2 itemselector' value='717'>
 	<img src='items/2267-0.png' class='item_img2 itemselector' value='718'>
+	<hr>
+	<center><span class="white">FurfSky</span></center>
+
+<img src='items/furf/aspect_dragon.png' class='itemselector2 item_img2' onclick='SetFurfImage("aspect_dragon.png");'>
+<img src='items/furf/aspect_sword.png' class='itemselector2 item_img2' onclick='SetFurfImage("aspect_sword.png");'>
+<img src='items/furf/birch.png' class='itemselector2 item_img2' onclick='SetFurfImage("birch.png");'>
+<img src='items/furf/budget_hopper.png' class='itemselector2 item_img2' onclick='SetFurfImage("budget_hopper.png");'>
+<img src='items/furf/challenging_rod_cast.png' class='itemselector2 item_img2' onclick='SetFurfImage("challenging_rod_cast.png");'>
+<img src='items/furf/challenging_rod_uncast.png' class='itemselector2 item_img2' onclick='SetFurfImage("challenging_rod_uncast.png");'>
+<img src='items/furf/cleaver.png' class='itemselector2 item_img2' onclick='SetFurfImage("cleaver.png");'>
+<img src='items/furf/deepocean.png' class='itemselector2 item_img2' onclick='SetFurfImage("deepocean.png");'>
+<img src='items/furf/desert.png' class='itemselector2 item_img2' onclick='SetFurfImage("desert.png");'>
+<img src='items/furf/ember_rod.png' class='itemselector2 item_img2' onclick='SetFurfImage("ember_rod.png");'>
+<img src='items/furf/emerald_blade.png' class='itemselector2 item_img2' onclick='SetFurfImage("emerald_blade.png");'>
+<img src='items/furf/enchanted_hopper.png' class='itemselector2 item_img2' onclick='SetFurfImage("enchanted_hopper.png");'>
+<img src='items/furf/end.png' class='itemselector2 item_img2' onclick='SetFurfImage("end.png");'>
+<img src='items/furf/ender_bow_standby.png' class='itemselector2 item_img2' onclick='SetFurfImage("ender_bow_standby.png");'>
+<img src='items/furf/ender_sword.png' class='itemselector2 item_img2' onclick='SetFurfImage("ender_sword.png");'>
+<img src='items/furf/endstone_bow_standby.png' class='itemselector2 item_img2' onclick='SetFurfImage("endstone_bow_standby.png");'>
+<img src='items/furf/explosive_bow_standby.png' class='itemselector2 item_img2' onclick='SetFurfImage("explosive_bow_standby.png");'>
+<img src='items/furf/farmers_rod_cast.png' class='itemselector2 item_img2' onclick='SetFurfImage("farmers_rod_cast.png");'>
+<img src='items/furf/farmers_rod_uncast.png' class='itemselector2 item_img2' onclick='SetFurfImage("farmers_rod_uncast.png");'>
+<img src='items/furf/forest.png' class='itemselector2 item_img2' onclick='SetFurfImage("forest.png");'>
+<img src='items/furf/golem_sword.png' class='itemselector2 item_img2' onclick='SetFurfImage("golem_sword.png");'>
+<img src='items/furf/grand_bottle.png' class='itemselector2 item_img2' onclick='SetFurfImage("grand_bottle.png");'>
+<img src='items/furf/grapple_hook.png' class='itemselector2 item_img2' onclick='SetFurfImage("grapple_hook.png");'>
+<img src='items/furf/grapple_hook_cast.png' class='itemselector2 item_img2' onclick='SetFurfImage("grapple_hook_cast.png");'>
+<img src='items/furf/hurricane_bow_standby.png' class='itemselector2 item_img2' onclick='SetFurfImage("hurricane_bow_standby.png");'>
+<img src='items/furf/ink_wand.png' class='itemselector2 item_img2' onclick='SetFurfImage("ink_wand.png");'>
+<img src='items/furf/jungle.png' class='itemselector2 item_img2' onclick='SetFurfImage("jungle.png");'>
+<img src='items/furf/jungle_axe.png' class='itemselector2 item_img2' onclick='SetFurfImage("jungle_axe.png");'>
+<img src='items/furf/leaping_sword.png' class='itemselector2 item_img2' onclick='SetFurfImage("leaping_sword.png");'>
+<img src='items/furf/magma_bow_1.png' class='itemselector2 item_img2' onclick='SetFurfImage("magma_bow_1.png");'>
+<img src='items/furf/midas_sword.png' class='itemselector2 item_img2' onclick='SetFurfImage("midas_sword.png");'>
+<img src='items/furf/nether.png' class='itemselector2 item_img2' onclick='SetFurfImage("nether.png");'>
+<img src='items/furf/pigman_sword.png' class='itemselector2 item_img2' onclick='SetFurfImage("pigman_sword.png");'>
+<img src='items/furf/prismarine_blade.png' class='itemselector2 item_img2' onclick='SetFurfImage("prismarine_blade.png");'>
+<img src='items/furf/prismarine_rod_cast.png' class='itemselector2 item_img2' onclick='SetFurfImage("prismarine_rod_cast.png");'>
+<img src='items/furf/prismarine_rod_uncast.png' class='itemselector2 item_img2' onclick='SetFurfImage("prismarine_rod_uncast.png");'>
+<img src='items/furf/rod_of_champions_cast.png' class='itemselector2 item_img2' onclick='SetFurfImage("rod_of_champions_cast.png");'>
+<img src='items/furf/rod_of_champions_uncast.png' class='itemselector2 item_img2' onclick='SetFurfImage("rod_of_champions_uncast.png");'>
+<img src='items/furf/rod_of_legends_cast.png' class='itemselector2 item_img2' onclick='SetFurfImage("rod_of_legends_cast.png");'>
+<img src='items/furf/rod_of_legends_uncast.png' class='itemselector2 item_img2' onclick='SetFurfImage("rod_of_legends_uncast.png");'>
+<img src='items/furf/rogue_sword.png' class='itemselector2 item_img2' onclick='SetFurfImage("rogue_sword.png");'>
+<img src='items/furf/roofed.png' class='itemselector2 item_img2' onclick='SetFurfImage("roofed.png");'>
+<img src='items/furf/runaan_bow_0.png' class='itemselector2 item_img2' onclick='SetFurfImage("runaan_bow_0.png");'>
+<img src='items/furf/savanna.png' class='itemselector2 item_img2' onclick='SetFurfImage("savanna.png");'>
+<img src='items/furf/savanna_bow_0.png' class='itemselector2 item_img2' onclick='SetFurfImage("savanna_bow_0.png");'>
+<img src='items/furf/shredder_cast.png' class='itemselector2 item_img2' onclick='SetFurfImage("shredder_cast.png");'>
+<img src='items/furf/shredder_uncast.png' class='itemselector2 item_img2' onclick='SetFurfImage("shredder_uncast.png");'>
+<img src='items/furf/silver_fang.png' class='itemselector2 item_img2' onclick='SetFurfImage("silver_fang.png");'>
+<img src='items/furf/slime_bow_1.png' class='itemselector2 item_img2' onclick='SetFurfImage("slime_bow_1.png");'>
+<img src='items/furf/speedster_rod_cast.png' class='itemselector2 item_img2' onclick='SetFurfImage("speedster_rod_cast.png");'>
+<img src='items/furf/speedster_rod_uncast.png' class='itemselector2 item_img2' onclick='SetFurfImage("speedster_rod_uncast.png");'>
+<img src='items/furf/spider_sword.png' class='itemselector2 item_img2' onclick='SetFurfImage("spider_sword.png");'>
+<img src='items/furf/sponge_rod_cast.png' class='itemselector2 item_img2' onclick='SetFurfImage("sponge_rod_cast.png");'>
+<img src='items/furf/sponge_rod_uncast.png' class='itemselector2 item_img2' onclick='SetFurfImage("sponge_rod_uncast.png");'>
+<img src='items/furf/stonk.png' class='itemselector2 item_img2' onclick='SetFurfImage("stonk.png");'>
+<img src='items/furf/taiga.png' class='itemselector2 item_img2' onclick='SetFurfImage("taiga.png");'>
+<img src='items/furf/titanic_bottle.png' class='itemselector2 item_img2' onclick='SetFurfImage("titanic_bottle.png");'>
+<img src='items/furf/undead_sword.png' class='itemselector2 item_img2' onclick='SetFurfImage("undead_sword.png");'>
+<img src='items/furf/wither_bow_0.png' class='itemselector2 item_img2' onclick='SetFurfImage("wither_bow_0.png");'>
+<img src='items/furf/zombie_pickaxe.png' class='itemselector2 item_img2' onclick='SetFurfImage("zombie_pickaxe.png");'>
+
+	<hr>
+	<center>
+		<span class="white">Head:</span><br>
+		<input class="mcin" placeholder="Username/UUID" id="head_u" class="white"> <button class="button" onclick="GenerateHead($('#head_u').val());">Confirm</button>
+	</center>
+	<hr>
+	<center>
+		<span class="white">URL:</span><br>
+		<input class="mcin" placeholder="https://example.com/example.png" id="head_ri" class="white"> <button class="button" onclick="SetURLHead($('#head_ri').val());">Confirm</button>
+	</center>
 </div>
 
 <div id="ErrorFlash" style="display: none;"><b class="red">Error!</b> Check console!</div>
@@ -1190,6 +1265,34 @@ window.onload = function()
 		console.log("[AutoUpdate] Updating from $_GET("+key+")");
 		UpdateValue(key, $_GET[key]);
 	}
+	$("#ShareLink").val(CompileShareLink());
+}
+function GenerateHead(un)
+{
+	$("#ItemPreviewImg").attr('src', "https://mc-heads.net/head/"+un);
+	ShareLink['ico'] = "head/"+un;
+	$("#ShareLink").val(CompileShareLink());
+	$("body").removeClass("blured");
+	$("#SelectIco").css("display", "none");
+	UpdateSizes();
+}
+function SetURLHead(u)
+{
+	$('#ItemPreviewImg').attr('src', u);
+	$("body").removeClass("blured");
+	$("#SelectIco").css("display", "none");
+	ShareLink['ico'] = u;
+	$("#ShareLink").val(CompileShareLink());
+	UpdateSizes();
+}
+function SetFurfImage(i)
+{
+	$('#ItemPreviewImg').attr('src', "items/furf/"+i);
+	$("body").removeClass("blured");
+	$("#SelectIco").css("display", "none");
+	ShareLink['ico'] = 'furf/'+i.split('.png')[0];
+	$("#ShareLink").val(CompileShareLink());
+	UpdateSizes();
 }
 function SetMainImage(src)
 {
@@ -1259,9 +1362,22 @@ function FlashError()
 function CallSpecialValueUpdate(w,h)
 {
 	ShareLink[w] = h;
+	console.log(w, h);
 	switch(w)
 	{
 		case "ico":
+			if(h.startsWith("head/"))
+			{
+				$("#ItemPreviewImg").attr("src", "https://mc-heads.net/"+h);
+				return;
+				break;
+			}
+			else if(h.startsWith("http"))
+			{
+				$("#ItemPreviewImg").attr("src", h);
+				return;
+				break;
+			}
 			$("#ItemPreviewImg").attr("src", "items/"+h+".png");
 			break;
 		case "rarity":
