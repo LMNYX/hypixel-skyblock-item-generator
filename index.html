@@ -1282,6 +1282,10 @@ function UpdateValue(w, h, add = "")
 	{
 		h = "+"+h;
 	}
+	else if(window.StringVars.includes(w))
+	{
+		h = h;
+	}
 	else if(parseInt(h) == NaN)
 	{
 		h = 0;
