@@ -1,12 +1,14 @@
 <head>
 	<title>- item builder -</title>
   <script type="text/javascript" src="mc_ids.js"></script>
+  <script type="text/javascript" src="freshcoal_heads.js"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/popper.js@1"></script>
 <script src="https://unpkg.com/tippy.js@5"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js" integrity="sha256-QHdJObhDO++VITP6S4tMlDHRWMaUOk+s/xWIRgF/YY0=" crossorigin="anonymous"></script>
 <script
   src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 </head>
@@ -358,16 +360,26 @@ https://discord.gg/n36dbzH
 	<div class="mpnc DontDisplayIfZero">Ability Cooldown:</div>
 	<input type="text" onkeyup="UpdateValue('itemability_cooldown', this.value, '&as');" min="0" max="100000" class="mcin gray" placeholder="0" value="0"><br>
 	<!-- LMNYX'S HEAVEN -->
-	<!--<div class="mpnc"><label for="enablermba">Ability Right Click:</label></div>
-	<input onchange="UpdateValue('itemability_rmb', this.checked);" type="checkbox" id="enablermba"><br>-->
+	<div class="mpnc"><label>Ability Use:</label></div>
+	<button class="button" style="width: 395px;" onclick="SwitchAbilityUsage();" id="AbilityUseB">Passive</button><br>
+	<div class="mpnc">Ability: </div>
+	<button class="button" style="width: 395px;" onclick="SwitchAbilityDisplay();" id="AbilityDisplayB">Item Ability</button><br>
+	<div id="_PieceBonus" style="display: none;">
+
+	<div class="mpnc">Piece Bonus: </div>
+	<input type="text" onkeyup="UpdateValue('itemability_piecebonus', this.value);" minlength="0" maxlength="100000" class="mcin gray" placeholder="Nothing"><br>
+	<div class="mpnc">Piece Bonus Desc: </div>
+	<input type="text" onkeyup="UpdateValue('itemability_piecebonusdesc', this.value);" minlength="0" maxlength="100000" class="mcin gray" placeholder="Just a description."><br>
+	</div>
 	<div class="mpnc">Rarity:</div>
-	<select type="text" onchange="UpdateValue('rarity', this.value);" min="0" maxlength="100000" class="mcin gray" placeholder="0" value="0">
+	<select type="text" onchange="UpdateValue('rarity', this.value);" min="0" id="RaritySelector" maxlength="100000" class="mcin gray" placeholder="0" value="0">
 		<option value="0">Common</option>
 		<option value="1" class="green">Uncommon</option>
 		<option value="2" class="blue">Rare</option>
 		<option value="3" class="dark_purple">Epic</option>
 		<option value="4" class="gold">Legendary</option>
 		<option value="5" class="light_purple">Special</option>
+		<option value="----------" class="aqua">Custom</option>
 	</select><br>
 	<br>
 	<br>
@@ -383,19 +395,23 @@ https://discord.gg/n36dbzH
 		<span id="Hide_ItemValue_Crit" style="display: none;" class="block"><span class="gray">Crit Chance: </span><span class="red" id="ItemValue_Crit">+0%</span></span>
 		<span id="Hide_ItemValue_CritDmg" style="display: none;" class="block"><span class="gray">Crit Damage: </span><span class="red" id="ItemValue_CritDmg">+0%</span></span>
 		<span id="Hide_ItemValue_Atk" style="display: none;" class="block"><span class="gray">Attack Speed: </span><span class="red" id="ItemValue_Atk">+0%</span></span>
-		<br>
+		<br id="Br_0" style="display: none;">
 		<span id="Hide_ItemValue_Health" style="display: none;" class="block"><span class="gray">Health: </span><span class="green" id="ItemValue_Health">+0 HP</span></span>
 		<span id="Hide_ItemValue_Def" style="display: none;" class="block"><span class="gray">Defense: </span><span class="green" id="ItemValue_Def">+0</span></span>
 		<span id="Hide_ItemValue_Speed" style="display: none;" class="block"><span class="gray">Speed: </span><span class="green" id="ItemValue_Speed">+0%</span></span>
-		<span id="Hide_ItemValue_Iq" style="display: none;" class="block"><span class="gray">Itelligence: </span><span class="green" id="ItemValue_Iq">+0</span></span>
-		<br>
-		<span id="Hide_ItemValue_AbilityName" style="display: none;" class="block gold">Item Ability: <span id="ItemValue_AbilityName">None</span><!-- temp <span id="Hide_ItemValue_AbilityRMB" class="yellow" style="font-weight: bold;">RIGHT CLICK</span>--></span>
+		<span id="Hide_ItemValue_Iq" style="display: none;" class="block"><span class="gray">Intelligence: </span><span class="green" id="ItemValue_Iq">+0</span></span>
+		<br id="Br_1" style="display: none;">
+		<span id="Hide_ItemValue_AbilityName" style="display: none;" class="block gold"><span id="AbilityStr">Item Ability</span>: <span id="ItemValue_AbilityName">None</span> <span id="Hide_ItemValue_AbilityRMB" class="yellow" style="font-weight: bold;"><span id="ItemValue_AbilityRMB"></span></span></span>
 		<span id="Hide_ItemValue_AbilityDesc" style="display: none;"  class="block"><span class="gray" id="ItemValue_AbilityDesc">Nothing to describe yet.</span></span>
 		<span id="Hide_ItemValue_AbilityMana" style="display: none;" class="block"><span class="darkgray">Mana cost: </span><span class="dark_aqua" id="ItemValue_AbilityMana">0</span></span>
 		<span id="Hide_ItemValue_AbilityCl" style="display: none;" class="block"><span class="darkgray">Cooldown: </span><span class="green" id="ItemValue_AbilityCl">0s</span></span>
-		<br>
-		<span class="white" id="ItemRarity">COMMON</span>
-		<br>
+		<br id="Br_2" style="display: none;">
+		<!-- Piece -->
+
+		<span id="Hide_ItemValue_PieceName" style="display: none;" class="block gold">Piece Bonus: <span id="ItemValue_PieceName">None</span></span>
+		<span id="Hide_ItemValue_PieceDesc" style="display: none;" class="block"><span class="gray" id="ItemValue_PieceDesc">Nothing to describe yet.</span></span>
+		<br id="Br_3" style="display: none;">
+		<span class="white" id="ItemRarity" style="display: block;">COMMON</span>
 		<span class="darkgray" style="font-style: italic;" id="RemoveableNote" onclick="RemoveCopy();">/* https://discord.gg/n36dbzH */</span>
 	</div>
 	<br>
@@ -1198,7 +1214,9 @@ https://discord.gg/n36dbzH
 <img src='items/furf/undead_sword.png' class='itemselector2 item_img2' onclick='SetFurfImage("undead_sword.png");'>
 <img src='items/furf/wither_bow_0.png' class='itemselector2 item_img2' onclick='SetFurfImage("wither_bow_0.png");'>
 <img src='items/furf/zombie_pickaxe.png' class='itemselector2 item_img2' onclick='SetFurfImage("zombie_pickaxe.png");'>
-
+	<hr>
+	<center><span class="white">Freshcoal's Heads</span></center>
+	<div id="_FreshCoalLazy"></div>
 	<hr>
 	<center>
 		<span class="white">Head:</span><br>
@@ -1230,6 +1248,17 @@ window.onload = function()
 		tippy(itemsmc[i], {
 			content: mc_ids[i]['name']
 		});
+	}
+	var FrHold = document.getElementById("_FreshCoalLazy");
+	for (i = 0; i < FreshCoal.length; i++)
+	{
+		var n = document.createElement("img");
+		n.src = FreshCoal[i];
+		n.className = "itemselector2 item_img2";
+		n.onclick = function(){ SetURLHead(this.src); };
+		n.onError = function(){ this.remove(); };
+		console.log(FreshCoal[i]);
+		FrHold.append(n);
 	}
 	var parts = window.location.search.substr(1).split("&");
 	var $_GET = {};
@@ -1335,7 +1364,74 @@ function setid(i,v)
 {
 	document.getElementById(i).innerHTML = v;
 }
+var CurrentDisplay = 0;
+function SwitchAbilityDisplay()
+{
+	switch(CurrentDisplay)
+	{
+		case 0:
+			CurrentDisplay = 1;
+			$("#AbilityStr").html("Full Set Bonus");
+			$("#AbilityDisplayB").html("Full Set Bonus");
+			break;
+		case 1:
+			CurrentDisplay = 2;
+			$("#AbilityStr").html("Full Set Bonus");
+			$("#AbilityDisplayB").html("Full Set Bonus and Piece Bonus");
+			$("#_PieceBonus").css("display", "block");
+			if(GreenActual.includes("itemability_piecebonus"))
+			{
+				$("#Hide_ItemValue_PieceName").css("display", "block");
+				$("#Br_3").css("display", "block");
+			}
+			if(GreenActual.includes("itemability_piecebonusdesc"))
+			{
+				$("#Hide_ItemValue_PieceDesc").css("display", "block");
+				$("#Br_3").css("display", "block");
+			}
+			break;
+		case 2:
+			CurrentDisplay = 0;
+			$("#AbilityStr").html("Item Ability");
+			$("#AbilityDisplayB").html("Item Ability");
+			$("#Hide_ItemValue_PieceName").css("display", "none");
+			$("#Hide_ItemValue_PieceDesc").css("display", "none");
+			$("#Br_3").css("display", "none");
+			$("#_PieceBonus").css("display", "none");
+			break;
+	}
+	ShareLink["abilitystr"] = CurrentDisplay;
+	$("#ShareLink").val(CompileShareLink());
+	UpdateSizes();
+}
 
+function SetAbilityDisplay(l)
+{
+	switch(l)
+	{
+		case 1:
+			CurrentDisplay = 1;
+			$("#AbilityStr").html("Full Set Bonus");
+			$("#AbilityDisplayB").html("Full Set Bonus");
+			break;
+		case 2:
+			CurrentDisplay = 2;
+			$("#AbilityStr").html("Full Set Bonus");
+			$("#AbilityDisplayB").html("Full Set Bonus and Piece Bonus");
+			break;
+		case 0:
+			CurrentDisplay = 0;
+			$("#AbilityStr").html("Item Ability");
+			$("#Hide_ItemValue_PieceName").css("display", "none");
+			$("#Hide_ItemValue_PieceDesc").css("display", "none");
+			$("#Br_3").css("display", "none");
+			$("#AbilityDisplayB").html("Item Ability");
+			break;
+	}
+	ShareLink["abilitystr"] = CurrentDisplay;
+	$("#ShareLink").val(CompileShareLink());
+	UpdateSizes();
+}
 
 var LinkedVars = {
 	"name": {"out": "ItemValue_Name", "suffix": "", "prefix": "", "default": "Unnamed Item"},
@@ -1353,7 +1449,20 @@ var LinkedVars = {
 	"itemability_mana": {"out": "ItemValue_AbilityMana", "suffix": "", "prefix": "", "default": null},
 	"itemability_cooldown": {"out": "ItemValue_AbilityCl", "suffix": "s", "prefix": "", "default": null},
 	"rarity": {"special": true},
-	"ico": {"special": true}
+	"ico": {"special": true},
+	"abilitystr": {"special": true},
+	"itemability_piecebonus": {"out": "ItemValue_PieceName", "suffix": "", "prefix": "", "default": null},
+	"itemability_piecebonusdesc": {"out": "ItemValue_PieceDesc", "suffix": "", "prefix": "", "default": null},
+	"rmb_display": {"special": true},
+	"custom_rarity_name": {"special": true},
+	"custom_rarity_color": {"special": true}
+};
+var RedExpected = ["damage", "strength", "crit", "critdmg", "atk"];
+var GreenExpected = ["health", "defense", "speed", "intelligence"];
+var RedActual = [];
+var GreenActual = [];
+var RandomizableVars = { // TO-DO
+	"name": ["Aspect of {0}", "Legacy of {0}", "{0}", "{0} Sword", '{0}']
 };
 function FlashError()
 {
@@ -1365,10 +1474,30 @@ function CallSpecialValueUpdate(w,h)
 	console.log(w, h);
 	switch(w)
 	{
+		case "custom_rarity_color":
+			$("#ItemValue_Name").attr("class", h);
+			$("#ItemRarity").attr("class", h);
+			$("#ShareLink").val(CompileShareLink());
+			break;
+		case "custom_rarity_name":
+			$("#ItemRarity").html(h.toUpperCase());
+			$("#ShareLink").val(CompileShareLink());
+			break;
+		case "rmb_display":
+			SetAbilityUsage(h);
+			$("#ShareLink").val(CompileShareLink());
+			return;
+			break;
+		case "abilitystr":
+			SetAbilityDisplay(parseInt(h));
+			$("#ShareLink").val(CompileShareLink());
+			return;
+			break;
 		case "ico":
 			if(h.startsWith("head/"))
 			{
 				$("#ItemPreviewImg").attr("src", "https://mc-heads.net/"+h);
+				$("#ShareLink").val(CompileShareLink());
 				return;
 				break;
 			}
@@ -1379,10 +1508,32 @@ function CallSpecialValueUpdate(w,h)
 				break;
 			}
 			$("#ItemPreviewImg").attr("src", "items/"+h+".png");
+			$("#ShareLink").val(CompileShareLink());
 			break;
 		case "rarity":
 			var rarities = ["white", "green", "blue", "dark_purple", "gold", "light_purple"];
 			var string_rartieis = ["COMMON", "UNCOMMON", "RARE", "EPIC", "LEGENDARY", "SPECIAL"];
+			if(rarities[h] == null) {
+				var CustomRarity = prompt("Custom Rarity Name: ");
+				if(CustomRarity == "" || CustomRarity == null){
+					$("#RaritySelector").val(0); return;
+				}
+				var CustomRarityColor = prompt("-- COLOR CODES --\ndark_red, red, gold\nyellow, dark_green, green\naqua, light_purple, dark_purple\nwhite, gray, darkgray, black\n\nEnter Custom rarity Color code: ");
+				if(CustomRarityColor == "" || CustomRarityColor == null){
+					$("#RaritySelector").val(0); return;
+				}
+				$("#ItemValue_Name").attr("class", CustomRarityColor);
+				$("#ItemRarity").html(CustomRarity.toUpperCase());
+				$("#ItemRarity").attr("class", CustomRarityColor);
+				if(ShareLink['rarity'] != null)
+				{
+					delete ShareLink['rarity'];
+				}
+				ShareLink['custom_rarity_name'] = CustomRarity;
+				ShareLink['custom_rarity_color'] = CustomRarityColor;
+				$("#ShareLink").val(CompileShareLink());
+				break;
+			}
 			document.getElementById("ItemRarity").innerHTML = string_rartieis[h];
 			document.getElementById("ItemRarity").className = rarities[h];
 			document.getElementById("ItemValue_Name").className = rarities[h];
@@ -1422,23 +1573,27 @@ function CompileShareLink()
 }
 function UpdateValue(w, h, deprecated = "ReallyDeprecated")
 {
+	ProceedBrs(w,h);
 	console.log("[UpdateValue] Updating value:\nName: %s\nValue: %s", w,h);
 	if(LinkedVars[w] == null) { console.log("There is an error occured with updating a value: No LinkedVar found with name %s!", w); FlashError(); return; }
 	if(LinkedVars[w].special != null || LinkedVars[w].special)
 	{
 		CallSpecialValueUpdate(w,h);
+		ProceedBrs(w,h);
 		UpdateSizes();
 		return;
 	}
 	if(LinkedVars[w].default == null && !h)
 	{
 		$("#Hide_"+LinkedVars[w].out).css("display", "none");
+		ProceedBrs(w,h);
 		UpdateSizes();
 		return;
 	}
 	else if (LinkedVars[w].default != null && !h)
 	{
 		$("#"+LinkedVars[w].out).html(LinkedVars[w].default);
+		ProceedBrs(w,h);
 		UpdateSizes();
 		return;
 	}
@@ -1448,12 +1603,129 @@ function UpdateValue(w, h, deprecated = "ReallyDeprecated")
 		h = parseInt(h);
 		NoPref = true;
 	}
+	ProceedBrs(w, h);
 	$("#Hide_"+LinkedVars[w].out).css("display", "block");
 	if(!NoPref) { $("#"+LinkedVars[w].out).html(replacers(LinkedVars[w].prefix+h+LinkedVars[w].suffix)); }
 	else { $("#"+LinkedVars[w].out).html(replacers(h+LinkedVars[w].suffix)); }
 	ShareLink[w] = h;
 	$("#ShareLink").val(CompileShareLink());
+	UpdateBrs();
 	UpdateSizes();
+}
+var CurrentUsage = 0;
+function SwitchAbilityUsage()
+{
+	switch(CurrentUsage)
+	{
+		case 0:
+			$("#ItemValue_AbilityRMB").html("RIGHT CLICK");
+			$("#AbilityUseB").html("Right click");
+			CurrentUsage = 1;
+			break;
+		case 1:
+			$("#ItemValue_AbilityRMB").html("SNEAK");
+			$("#AbilityUseB").html("Sneak");
+			CurrentUsage = 2;
+			break;
+		case 2:
+			$("#ItemValue_AbilityRMB").html("");
+			$("#AbilityUseB").html("Passive");
+			CurrentUsage = 0;
+			break;
+	}
+	ShareLink["rmb_display"] = CurrentUsage;
+	$("#ShareLink").val(CompileShareLink());
+	UpdateSizes();
+
+}
+function SetAbilityUsage(Cu)
+{
+	Cu = parseInt(Cu);
+	switch(Cu)
+	{
+		case 1:
+			$("#ItemValue_AbilityRMB").html("RIGHT CLICK");
+			$("#AbilityUseB").html("Right click");
+			break;
+		case 2:
+			$("#ItemValue_AbilityRMB").html("SNEAK");
+			$("#AbilityUseB").html("Sneak");
+			break;
+		case 0:
+			$("#ItemValue_AbilityRMB").html("");
+			$("#AbilityUseB").html("Passive");
+			break;
+	}
+	ShareLink["rmb_display"] = Cu;
+	$("#ShareLink").val(CompileShareLink());
+	UpdateSizes();
+
+}
+function ProceedBrs(w, h)
+{
+	if(GreenExpected.includes(w))
+	{
+		console.log("[GreenExpected] Received "+w);
+		if(!h && window.GreenActual.includes(w))
+		{
+			console.log("[GreenActual] Removed "+w);
+			window.GreenActual.pop(w);
+		}
+		else if (h && !window.GreenActual.includes(w))
+		{
+			console.log("[GreenActual] Added "+w);
+			window.GreenActual.push(w);
+		}
+	}
+	else if (RedExpected.includes(w))
+	{
+		console.log("[RedExpected] Received "+w);
+		if(!h && RedActual.includes(w))
+		{
+			console.log("[RedActual] Removed "+w);
+			RedActual.pop(w);
+		}
+		else if (h && !RedActual.includes(w))
+		{
+			console.log("[RedActual] Added "+w);
+			RedActual.push(w);
+		}
+	}
+}
+function UpdateBrs()
+{
+	if(window.GreenActual.length > 0)
+	{
+		$("#Br_1").css("display", "block");
+	}
+	else
+	{
+		$("#Br_1").css("display", "none");
+	}
+	if(RedActual.length > 0)
+	{
+		$("#Br_0").css("display", "block");
+	}
+	else
+	{
+		$("#Br_0").css("display", "none");
+	}
+	if($("#ItemValue_AbilityName").css('display') != 'none' || $("#ItemValue_AbilityDesc").css('display') != 'none')
+	{
+		$("#Br_2").css("display", "block");
+	}
+	else
+	{
+		$("#Br_2").css("display", "none");
+	}
+	if($("#Hide_ItemValue_PieceName").css('display') != 'none' || $("#Hide_ItemValue_PieceName").css('display') != 'none')
+	{
+		$("#Br_3").css("display", "block");
+	}
+	else
+	{
+		$("#Br_3").css("display", "none");
+	}
 }
 var color = {
   '1': 'dark_blue',
