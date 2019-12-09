@@ -321,6 +321,10 @@ https://discord.gg/n36dbzH
 	top: 0;
 	right: 0;
 }
+.normal_br
+{
+	margin-top: -8px;
+}
 </style>
 <div style="margin: 42px auto; width: 75%;">
 	<h3>Item Builder <span class="gray" id="ResultNotice">Result at the bottom</span></h3>
@@ -1756,7 +1760,7 @@ function replacers(string) {
     .replace(/&n/gi, '<u>')
     .replace(/&o/gi, '<em>')
     .replace(/&r/gi, resetFormat)
-    .replace(/\\n/gi, '<br />');
+    .replace(/\\n/gi, '<div class="normal_br"/>');
   return replaced;
 }
 
