@@ -46,6 +46,8 @@
 .imgbord {
   border:4px solid transparent;
   border-image: url('https://i.imgur.com/LGlfFuU.png') 4 fill round;
+  -moz-border-image: url('https://i.imgur.com/LGlfFuU.png') 4 fill round;
+  -webkit-border-image: url('https://i.imgur.com/LGlfFuU.png') 4 fill round;
   color: white;
   padding:6px;
 }
@@ -178,6 +180,19 @@
   border-top: 2px solid #BDC6FF;
   background-image: url('button_active_center.png');
   color: #FFFFA0;
+}
+.button:disabled
+{
+	-webkit-filter: grayscale(100%);
+	color: rgb(170,170,170);
+	cursor: not-allowed;
+	filter: grayscale(100%);
+}
+.button:disabled:hover
+{
+	-webkit-filter: grayscale(100%);
+	color: rgb(170,170,170);
+	filter: grayscale(100%);
 }
 .item_img 
 {
@@ -336,7 +351,7 @@ https://discord.gg/n36dbzH
 		<center><span class="gray">I'm currently testing this generator, so be sure to report any bugs!</span></center>
 	</div>
 	<div class="mpnc">Item Name:</div>
-	<input type="text" onkeyup="UpdateValue('name', this.value);" maxlength="48" class="mcin gray" placeholder="Golden Carrot"><br>
+	<input type="text" onkeyup="UpdateValue('name', this.value);" maxlength="64" class="mcin gray" placeholder="Golden Carrot"><br>
 	<div class="mpnc DontDisplayIfZero">Damage:</div>
 	<input type="text" onkeyup="UpdateValue('damage', this.value);" min="0" max="100000" class="mcin gray" placeholder="0" value="0"><br>
 	<div class="mpnc DontDisplayIfZero">Strength:</div>
@@ -375,6 +390,8 @@ https://discord.gg/n36dbzH
 	<div class="mpnc">Piece Bonus Desc: </div>
 	<input type="text" onkeyup="UpdateValue('itemability_piecebonusdesc', this.value);" minlength="0" maxlength="100000" class="mcin gray" placeholder="Just a description."><br>
 	</div>
+	<div class="mpnc">Description: </div>
+	<input type="text" onkeyup="UpdateValue('descwhole', this.value);" minlength="0" maxlength="100000" class="mcin gray" placeholder="Just a description."><br>
 	<div class="mpnc">Rarity:</div>
 	<select type="text" onchange="UpdateValue('rarity', this.value);" min="0" id="RaritySelector" maxlength="100000" class="mcin gray" placeholder="0" value="0">
 		<option value="0">Common</option>
@@ -389,10 +406,11 @@ https://discord.gg/n36dbzH
 	<br>
 
 	</div>
-	<div class="item_holder" id="item_holder" onclick="SelectNewItem();">
-		<img src="items/2-0.png" class="item_img" id="ItemPreviewImg" onerror="SetMainImage('null.png');">
+	<div id="TSC">
+	<div class="item_holder to_screen" id="item_holder" onclick="SelectNewItem();">
+		<img src="items/2-0.png" class="item_img to_screen" id="ItemPreviewImg" onerror="SetMainImage('null.png');">
 	</div>
-	<div class="imgbord" id="item_preview" style="float: right; width: 80%;">
+	<div class="imgbord to_screen" id="item_preview" style="float: right; width: 80%;">
 		<span class="white" id="ItemValue_Name" class="block">Unnamed Item</span>
 		<span id="Hide_ItemValue_Damage" style="display: none;" class="block"><span class="gray">Damage: </span><span class="red" id="ItemValue_Damage">+0</span></span>
 		<span id="Hide_ItemValue_Strength" style="display: none;"  class="block"><span class="gray">Strength: </span><span class="red" id="ItemValue_Strength">+0</span></span>
@@ -415,13 +433,16 @@ https://discord.gg/n36dbzH
 		<span id="Hide_ItemValue_PieceName" style="display: none;" class="block gold">Piece Bonus: <span id="ItemValue_PieceName">None</span></span>
 		<span id="Hide_ItemValue_PieceDesc" style="display: none;" class="block"><span class="gray" id="ItemValue_PieceDesc">Nothing to describe yet.</span></span>
 		<br id="Br_3" style="display: none;">
+		<span id="Hide_ItemValue_Desc" style="display: none;"><span class="gray" id="ItemValue_Desc">Nothing to describe yet.</span></span>
 		<span class="white" id="ItemRarity" style="display: block;">COMMON</span>
 		<span class="darkgray" style="font-style: italic;" id="RemoveableNote" onclick="RemoveCopy();">/* https://discord.gg/n36dbzH */</span>
 	</div>
+</div>
 	<br>
 	<br>
 	<p>
 		<center>
+			<div id="SaveImgTooltip" style="display: inline;"><button class="button" id="SaveImg" onclick="SaveImg();" disabled=""><img src="download.png" style="width: 24px; height: 24px;"> Save</button></div>
 			<button class="button" onclick="window.location.href = 'https://discord.gg/n36dbzH';">Join Discord</button>
 			<button class="button" onclick="window.location.href = 'https://twitter.com/LilLmnyx';">View my Twitter</button>
 			<br>
@@ -1253,6 +1274,8 @@ window.onload = function()
 			content: mc_ids[i]['name']
 		});
 	}
+	tippy(document.getElementById("SaveImgTooltip"),
+		{ content: "Some day it will be available!" });
 	var FrHold = document.getElementById("_FreshCoalLazy");
 	for (i = 0; i < FreshCoal.length; i++)
 	{
@@ -1459,7 +1482,8 @@ var LinkedVars = {
 	"itemability_piecebonusdesc": {"out": "ItemValue_PieceDesc", "suffix": "", "prefix": "", "default": null},
 	"rmb_display": {"special": true},
 	"custom_rarity_name": {"special": true},
-	"custom_rarity_color": {"special": true}
+	"custom_rarity_color": {"special": true},
+	"descwhole": {"out": "ItemValue_Desc", "suffix": "", "prefix": "", "default": null}
 };
 var RedExpected = ["damage", "strength", "crit", "critdmg", "atk"];
 var GreenExpected = ["health", "defense", "speed", "intelligence"];
@@ -1575,6 +1599,12 @@ function CompileShareLink()
 
 	return BASE_URL;
 }
+
+function SaveImg()
+{
+	/* */
+}
+
 function UpdateValue(w, h, deprecated = "ReallyDeprecated")
 {
 	ProceedBrs(w,h);
@@ -1714,7 +1744,7 @@ function UpdateBrs()
 	{
 		$("#Br_0").css("display", "none");
 	}
-	if($("#ItemValue_AbilityName").css('display') != 'none' || $("#ItemValue_AbilityDesc").css('display') != 'none')
+	if($("#Hide_ItemValue_AbilityName").css('display') != 'none' || $("#Hide_ItemValue_AbilityDesc").css('display') != 'none')
 	{
 		$("#Br_2").css("display", "block");
 	}
@@ -1739,7 +1769,7 @@ var color = {
   '5': 'dark_purple',
   '6': 'gold',
   '7': 'gray',
-  '8': 'dark_gray',
+  '8': 'darkgray',
   '9': 'blue',
   '0': 'black',
   'a': 'green',
